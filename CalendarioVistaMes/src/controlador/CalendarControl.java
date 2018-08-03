@@ -13,14 +13,10 @@ public class CalendarControl {
 	private CalendarControlMonth mcm;
 	private MonthControlWindow mcw;
 	private Month month;
-
-
-
 	private UICalendar ventanaCalendarioMes;
 	private Hora hora;
 	
-
-
+	
 	public CalendarControl(Month month, UICalendar uiMonth) {
 		
 		this.month=month;
@@ -36,7 +32,11 @@ public class CalendarControl {
 	
 	public String generarHora () {
 	
-		hora = new Hora ();
+		if (hora==null) {
+			
+			hora = new Hora ();
+		}
+		
 		String horaGenerada = hora.contruccionHora();
 		return horaGenerada;
 		
@@ -170,8 +170,7 @@ public class CalendarControl {
 				
 			}
 			
-			
-
+		
 			
 		}
 		

@@ -13,13 +13,19 @@ public class Hora {
 	private String formatoHora;
 	private Boolean cambioDia = false;
 	private int diaActual;
+	private int mesActual;
+	private int yearActual;
 	private int diaConstruccionHora;
+	private int mesConstruccionHora;
+	private int yearConstruccionHora;
 	
 	
 	public Hora (){
 		
 		calendario = Calendar.getInstance();
 		diaActual = calendario.get(Calendar.DAY_OF_MONTH);
+		mesActual = calendario.get(Calendar.MONTH);
+		yearActual = calendario.get(Calendar.YEAR);
 		
 	}
 	
@@ -31,7 +37,10 @@ public class Hora {
 		hora = Integer.toString(calendario.get(Calendar.HOUR));
 		meridiem = calendario.get(Calendar.AM_PM);
 		diaConstruccionHora = calendario.get(Calendar.DAY_OF_MONTH);
-		//System.out.println("El día de hoy es: " + diaConstruccionHora);
+		mesConstruccionHora = calendario.get(Calendar.MONTH);
+		yearConstruccionHora = calendario.get(Calendar.YEAR);
+		System.out.println("-----------------------------------");
+		System.out.println ("Dia del reloj: "+diaConstruccionHora);
 		
 		if (meridiem==0) {
 			
@@ -64,16 +73,18 @@ public class Hora {
 	public Boolean cambioDia() {
 	
 		
-		if (diaConstruccionHora!=diaActual) {
+		if (diaConstruccionHora!=diaActual||mesConstruccionHora!=mesActual||yearConstruccionHora!=yearActual) {
 			cambioDia=true;
-			diaConstruccionHora=diaActual;
+			System.out.println("Dia anterior del calendario: "+diaActual);
+			diaActual=diaConstruccionHora;
+			mesActual=mesConstruccionHora;
+			yearActual=yearConstruccionHora;
 			System.out.println("Cambio de dia!!!");
-			
 		}
 		
-		System.out.println("-----------------------------------");
-		System.out.println("Dia inicio calendario: "+diaActual);
-		System.out.println ("Dia del reloj: "+diaConstruccionHora);
+
+
+
 		
 		return cambioDia;
 		
