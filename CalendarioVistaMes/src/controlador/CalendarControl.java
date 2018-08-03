@@ -1,29 +1,63 @@
 package controlador;
 
-import java.awt.event.*;
 
+import java.awt.event.*;
+import modelo.Hora;
 import modelo.Month;
 import vista.UICalendar;
 
 
 public class CalendarControl {
 	
-	CalendarControlYear mcy;
-	CalendarControlMonth mcm;
-	MonthControlWindow mcw;
-	Month month;
-	UICalendar uiMonth;
+	private CalendarControlYear mcy;
+	private CalendarControlMonth mcm;
+	private MonthControlWindow mcw;
+	private Month month;
+
+
+
+	private UICalendar ventanaCalendarioMes;
+	private Hora hora;
 	
-	public CalendarControl(Month month) {
+
+
+	public CalendarControl(Month month, UICalendar uiMonth) {
 		
 		this.month=month;
+		this.ventanaCalendarioMes=uiMonth;
+		this.ventanaCalendarioMes.setCalendarControl(this);
+		this.month.setCalendarControl(this);
 		mcy =  new CalendarControlYear();
 		mcm =  new CalendarControlMonth();
 		mcw = new MonthControlWindow();
-		uiMonth = new UICalendar(this);
-		uiMonth.drawMonthFirstTime(month);
+		uiMonth.drawMonthFirstTime();
 		
 	}
+	
+	public String generarHora () {
+	
+		hora = new Hora ();
+		String horaGenerada = hora.contruccionHora();
+		return horaGenerada;
+		
+	}
+	
+	public Hora getHora() {
+		return hora;
+	}
+
+	public void setHora(Hora hora) {
+		this.hora = hora;
+	}
+	
+	public Month getMonth() {
+		return month;
+	}
+
+	public void setMonth(Month month) {
+		this.month = month;
+	}
+	
 	
 	public CalendarControl () {
 		
@@ -60,7 +94,7 @@ public class CalendarControl {
 		public void actionPerformed(ActionEvent e) {
 			
 			
-			int year = Integer.parseInt(uiMonth.getYearText().getText());
+			int year = Integer.parseInt(ventanaCalendarioMes.getYearText().getText());
 			
 			String bp = e.getActionCommand();
 			
@@ -71,10 +105,10 @@ public class CalendarControl {
 		
 			}else year++;
 			
-			String m = uiMonth.getMonthText().getText();
+			String m = ventanaCalendarioMes.getMonthText().getText();
 			int mes = month.monthToInt(m);
 			Month newMonth = new Month (mes,year);
-			uiMonth.drawUpdate(newMonth);
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
 
@@ -93,8 +127,8 @@ public class CalendarControl {
 
 		public void actionPerformed(ActionEvent e) {
 
-			year = Integer.parseInt(uiMonth.getYearText().getText());
-			String m = uiMonth.getMonthText().getText();
+			year = Integer.parseInt(ventanaCalendarioMes.getYearText().getText());
+			String m = ventanaCalendarioMes.getMonthText().getText();
 			mes = month.monthToInt(m);
 			String bp = e.getActionCommand();
 			
@@ -144,14 +178,14 @@ public class CalendarControl {
 		public void actualizaMes() {
 			
 			Month newMonth = new Month ();
-			uiMonth.drawUpdate(newMonth);
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
 		
 		public void actualizaMes(int mes, int year) {
 			
 			Month newMonth = new Month (mes,year);
-			uiMonth.drawUpdate(newMonth);
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
 		

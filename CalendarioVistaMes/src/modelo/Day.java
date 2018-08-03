@@ -12,7 +12,6 @@ public class Day {
 	public Day () {
 		
 		day = new Date ();
-		setHora(new Hora());
 		
 	}
 	

@@ -2,9 +2,12 @@ package modelo;
 
 import java.util.*;
 
+import controlador.CalendarControl;
+
 
 public class Month {
 	
+	private CalendarControl calendarControl;
 	private ArrayList <Day> monthCalendar;
 	private Calendar calendar;
 	private String [] diasSemana = {"Lu","Ma","Mi","Ju","Vi","Sa","Do"};
@@ -16,6 +19,7 @@ public class Month {
 	private int diaInicioSemana;
 	private int numberOfYearWeek;
 	private ArrayList <String> numberOfweeks = new ArrayList <String>();
+
 
 	public Month () {
 		
@@ -233,6 +237,14 @@ public class Month {
 
 	public int getYear() {
 		return year;
+	}
+
+	public CalendarControl getCalendarControl() {
+		return calendarControl;
+	}
+
+	public void setCalendarControl(CalendarControl calendarControl) {
+		this.calendarControl = calendarControl;
 	}
 
 

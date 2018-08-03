@@ -2,15 +2,13 @@ package vista;
 
 import java.awt.*;
 import javax.swing.*;
-
 import controlador.CalendarControl;
-import modelo.Hora;
 import modelo.Month;
 
 
 public class UICalendar implements Runnable{
 	
-	private CalendarControl mc;
+	private CalendarControl calendarControl;
 	private JFrame marco;
 	private LaminaCustom laminaPrincipal;
 	private JPanel laminaSuperior;
@@ -20,25 +18,23 @@ public class UICalendar implements Runnable{
 	private TextFieldCustom yearText;
 	private TextFieldCustom monthText;
 	private TextFieldCustom hourText;
-	private Hora h;
 	private Thread hiloHora;
 	
-
-	public UICalendar (CalendarControl mc) {
-
-		this.mc=mc;
-
+	
+	public UICalendar () {	
+		
 	}
 	
-	public void drawMonthFirstTime (Month month) {
+	
+	public void drawMonthFirstTime () {
 
 		generarVentana();
 		generarOpcionesSuperiores(laminaSuperior);
-		monthText.setText(month.getMesesAno()[month.getMonth()]);
-		yearText.setText(Integer.toString(month.getYear()));
-		generarCuadriculaMes (laminaCentral,month);
-		generarCuadriculaNumeroSemanas(laminaOeste,month);
-		generarFecha(laminaInferior,month);
+		monthText.setText(getCalendarControl().getMonth().getMesesAno()[getCalendarControl().getMonth().getMonth()]);
+		yearText.setText(Integer.toString(getCalendarControl().getMonth().getYear()));
+		generarCuadriculaMes (laminaCentral,getCalendarControl().getMonth());
+		generarCuadriculaNumeroSemanas(laminaOeste,getCalendarControl().getMonth());
+		visualizarHora(laminaInferior);
 		marco.add(laminaPrincipal);
 		visualizarVentana ();
 		hiloHora =  new Thread(this);
@@ -56,7 +52,7 @@ public class UICalendar implements Runnable{
 		yearText.setText(Integer.toString(month.getYear()));
 		generarCuadriculaMes (laminaCentral,month);
 		generarCuadriculaNumeroSemanas(laminaOeste,month);
-		generarFecha(laminaInferior,month);
+		visualizarHora(laminaInferior);
 		//actualizarFecha();
 		marco.add(laminaPrincipal);
 		visualizarVentana ();
@@ -95,8 +91,8 @@ public class UICalendar implements Runnable{
 		yearText = new TextFieldCustom ("",3,18);
 		ButtonCustom botonFlechaDerecha = new ButtonCustom(null,">",15,20);
 		
-		botonFlechaIzquierda.addActionListener(mc.getMonthControlYear());
-		botonFlechaDerecha.addActionListener(mc.getMonthControlYear());
+		botonFlechaIzquierda.addActionListener(calendarControl.getMonthControlYear());
+		botonFlechaDerecha.addActionListener(calendarControl.getMonthControlYear());
 	
 		ButtonCustom botonFlechaIzquierda2 = new ButtonCustom(null,"<",15,20);
 		monthText = new TextFieldCustom ("",6,15);
@@ -108,10 +104,10 @@ public class UICalendar implements Runnable{
 		ButtonCustom botonHoy =  new ButtonCustom (null,"",25,22);
 
 				
-		botonFlechaIzquierda2.addActionListener(mc.getMonthControlMonth());
-		botonFlechaDerecha2.addActionListener(mc.getMonthControlMonth());
+		botonFlechaIzquierda2.addActionListener(calendarControl.getMonthControlMonth());
+		botonFlechaDerecha2.addActionListener(calendarControl.getMonthControlMonth());
 		
-		botonHoy.addActionListener(mc.getMonthControlMonth());
+		botonHoy.addActionListener(calendarControl.getMonthControlMonth());
 		
 		
 		laminaSuperior.add(botonFlechaIzquierda);
@@ -161,7 +157,7 @@ public class UICalendar implements Runnable{
 	}
 	
 	
-	private void generarFecha (JPanel laminaInferior, Month month) {
+	private void visualizarHora (JPanel laminaInferior) {
 		
 		if (hourText==null) {
 		
@@ -170,9 +166,7 @@ public class UICalendar implements Runnable{
 		}
 		
 		laminaInferior.setLayout(new FlowLayout(SwingConstants.RIGHT));
-	
-		h = new Hora ();
-		hourText.setText(h.contruccionHora());	
+		hourText.setText(getCalendarControl().generarHora());	
 		laminaInferior.add(hourText);
 		
 	}
@@ -180,7 +174,7 @@ public class UICalendar implements Runnable{
 	private void actualizarFecha() {
 		
 		hourText.setText(null);
-		hourText.setText(h.contruccionHora());
+		hourText.setText(getCalendarControl().generarHora());
 		
 	}
 	
@@ -204,7 +198,7 @@ public class UICalendar implements Runnable{
 		
 		marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		marco.setVisible(true);
-		marco.addWindowListener(mc.getMonthControlWindow());
+		marco.addWindowListener(calendarControl.getMonthControlWindow());
 		
 	}
 	
@@ -223,6 +217,14 @@ public class UICalendar implements Runnable{
 	public void setMonthText(TextFieldCustom monthText) {
 		this.monthText = monthText;
 	}
+	
+	public CalendarControl getCalendarControl() {
+		return calendarControl;
+	}
+
+	public void setCalendarControl(CalendarControl mc) {
+		this.calendarControl = mc;
+	}
 
 	public void run() {
 		
@@ -236,10 +238,9 @@ public class UICalendar implements Runnable{
 				e.printStackTrace();
 			}
 			
-			if (h.cambioDia()) {
-				mc.getMonthControlMonth().actualizaMes();				
+			if (getCalendarControl().getHora().cambioDia()) {
+				calendarControl.getMonthControlMonth().actualizaMes();				
 			}
-			
 			
 		}
 	
