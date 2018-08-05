@@ -246,7 +246,7 @@ public class UICalendar implements Runnable{
 		
 		marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		marco.setVisible(true);
-		marco.addWindowListener(calendarControl.getMonthControlWindow());
+		//marco.addWindowListener(calendarControl.getMonthControlWindow());
 		
 	}
 	

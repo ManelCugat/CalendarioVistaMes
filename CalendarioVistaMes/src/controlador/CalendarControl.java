@@ -11,7 +11,7 @@ public class CalendarControl {
 	
 	private CalendarControlYear mcy;
 	private CalendarControlMonth mcm;
-	private MonthControlWindow mcw;
+	//private MonthControlWindow mcw;
 	private Month month;
 	private Month newMonth;
 	private UICalendar ventanaCalendarioMes;
@@ -24,7 +24,7 @@ public class CalendarControl {
 		this.ventanaCalendarioMes=uiMonth;
 		mcy =  new CalendarControlYear(this);
 		mcm =  new CalendarControlMonth(this);
-		mcw = new MonthControlWindow();
+		//mcw = new MonthControlWindow();
 
 	}
 	
@@ -97,11 +97,11 @@ public class CalendarControl {
 		return mcm;
 	}
 	
-	public MonthControlWindow getMonthControlWindow() {
+	/*public MonthControlWindow getMonthControlWindow() {
 		
 		return mcw;
 		
-	}
+	}*/
 	
 
 	private class CalendarControlYear implements ActionListener{
@@ -219,7 +219,7 @@ public class CalendarControl {
 	}
 		
 		
-	private class MonthControlWindow implements WindowListener{
+	/*private class MonthControlWindow implements WindowListener{
 
 
 		public void windowActivated(WindowEvent e) {
@@ -234,7 +234,7 @@ public class CalendarControl {
 		public void windowOpened(WindowEvent e) {}
 		
 	
-	}
+	}*/
 		
 		
 		
