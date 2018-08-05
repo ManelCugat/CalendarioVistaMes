@@ -13,58 +13,33 @@ public class CalendarControl {
 	private CalendarControlMonth mcm;
 	private MonthControlWindow mcw;
 	private Month month;
-	private Month newMonth;
 	private UICalendar ventanaCalendarioMes;
 	private Hora hora;
 	
 	
-	public CalendarControl (Month month, UICalendar uiMonth) {
+	public CalendarControl(Month month, UICalendar uiMonth) {
 		
 		this.month=month;
 		this.ventanaCalendarioMes=uiMonth;
-		mcy =  new CalendarControlYear(this);
-		mcm =  new CalendarControlMonth(this);
+		this.ventanaCalendarioMes.setCalendarControl(this);
+		this.month.setCalendarControl(this);
+		mcy =  new CalendarControlYear();
+		mcm =  new CalendarControlMonth();
 		mcw = new MonthControlWindow();
-
-	}
-	
-	public void inicializarCalendario() {
-		
-		ventanaCalendarioMes.drawMonthFirstTime();
-	
-	}
-	
-	public void genenerarNuevoMes (int mes, int year) {
-		
-		newMonth = new Month (mes,year);
-		
-	}
-	
-	public void generaNuevoMes () {
-		
-		newMonth = new Month();
+		uiMonth.drawMonthFirstTime();
 		
 	}
 	
 	public String generarHora () {
 	
-		if (hora == null) {
-		
-			hora = new Hora();
-		
+		if (hora==null) {
+			
+			hora = new Hora ();
 		}
 		
 		String horaGenerada = hora.contruccionHora();
 		return horaGenerada;
 		
-	}
-	
-	public Month getNewMonth() {
-		return newMonth;
-	}
-
-	public void setNewMonth(Month newMonth) {
-		this.newMonth = newMonth;
 	}
 	
 	public Hora getHora() {
@@ -84,7 +59,13 @@ public class CalendarControl {
 	}
 	
 	
-	
+	public CalendarControl () {
+		
+
+		mcy =  new CalendarControlYear();
+		mcm =  new CalendarControlMonth();
+		
+	}
 	
 	public CalendarControlYear getMonthControlYear() {
 		
@@ -103,15 +84,10 @@ public class CalendarControl {
 		
 	}
 	
-
+	
 	private class CalendarControlYear implements ActionListener{
 		
-		
-		private CalendarControl calendarControl;
-		
-		public CalendarControlYear (CalendarControl calendarControl) {
-			
-			this.calendarControl=calendarControl;
+		public CalendarControlYear() {
 			
 		}
 		
@@ -131,24 +107,22 @@ public class CalendarControl {
 			
 			String m = ventanaCalendarioMes.getMonthText().getText();
 			int mes = month.monthToInt(m);
-			calendarControl.genenerarNuevoMes(mes, year);
-			ventanaCalendarioMes.drawUpdate(calendarControl);
+			Month newMonth = new Month (mes,year);
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
-		
 
+		
 	}
 	
 	public class CalendarControlMonth implements ActionListener{
 		
-		private int year;
-		private int mes;
-		private CalendarControl calendarControl;
+		int year;
+		int mes;
 		
 		
-		public CalendarControlMonth(CalendarControl calendarControl) {
+		public CalendarControlMonth() {
 			
-			this.calendarControl=calendarControl;
 		}
 
 		public void actionPerformed(ActionEvent e) {
@@ -202,17 +176,15 @@ public class CalendarControl {
 		
 		public void actualizaMes() {
 			
-			calendarControl.generaNuevoMes();
-			ventanaCalendarioMes.drawUpdate(calendarControl);
-			System.out.println("actualizo mes blanco");
+			Month newMonth = new Month ();
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
 		
 		public void actualizaMes(int mes, int year) {
 			
-			calendarControl.genenerarNuevoMes(mes, year);
-			ventanaCalendarioMes.drawUpdate(calendarControl);
-			System.out.println("actualizo mes tocadas flechas");
+			Month newMonth = new Month (mes,year);
+			ventanaCalendarioMes.drawUpdate(newMonth);
 			
 		}
 		

@@ -20,7 +20,7 @@ public class Hora {
 	private int yearConstruccionHora;
 	
 	
-	public  Hora (){
+	public Hora (){
 		
 		calendario = Calendar.getInstance();
 		diaActual = calendario.get(Calendar.DAY_OF_MONTH);
@@ -28,7 +28,6 @@ public class Hora {
 		yearActual = calendario.get(Calendar.YEAR);
 		
 	}
-	
 	
 	public String contruccionHora() {
 		
