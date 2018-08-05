@@ -46,12 +46,12 @@ public class UICalendar implements Runnable{
 
 	}
 	
-	public void drawUpdate(Month month) {
+	public void drawUpdate(CalendarControl calendarControl) {
 		
-		monthText.setText(month.getMesesAno()[month.getMonth()]);
-		yearText.setText(Integer.toString(month.getYear()));
-		generarCuadriculaMes (laminaCentral,month);
-		generarCuadriculaNumeroSemanas(laminaOeste,month);
+		monthText.setText(calendarControl.getNewMonth().getMesesAno()[calendarControl.getNewMonth().getMonth()]);
+		yearText.setText(Integer.toString(calendarControl.getNewMonth().getYear()));
+		generarCuadriculaMes (laminaCentral,calendarControl.getNewMonth());
+		generarCuadriculaNumeroSemanas(laminaOeste,calendarControl.getNewMonth());
 		visualizarHora(laminaInferior);
 		//actualizarFecha();
 		marco.add(laminaPrincipal);
@@ -202,6 +202,27 @@ public class UICalendar implements Runnable{
 		
 	}
 	
+
+	public void run() {
+		
+		while (true) {
+			
+			actualizarFecha();
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (getCalendarControl().getHora().cambioDia()) {
+				calendarControl.getMonthControlMonth().actualizaMes();				
+			}
+			
+		}
+	
+	}
+	
 	public JTextField getYearText() {
 		return yearText;
 	}
@@ -224,26 +245,6 @@ public class UICalendar implements Runnable{
 
 	public void setCalendarControl(CalendarControl mc) {
 		this.calendarControl = mc;
-	}
-
-	public void run() {
-		
-		while (true) {
-			
-			actualizarFecha();
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (getCalendarControl().getHora().cambioDia()) {
-				calendarControl.getMonthControlMonth().actualizaMes();				
-			}
-			
-		}
-	
 	}
 
 }
