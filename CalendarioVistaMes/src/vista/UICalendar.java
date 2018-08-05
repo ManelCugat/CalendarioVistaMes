@@ -3,8 +3,6 @@ package vista;
 import java.awt.*;
 import javax.swing.*;
 import controlador.CalendarControl;
-import modelo.Month;
-
 
 public class UICalendar implements Runnable{
 	
@@ -32,8 +30,8 @@ public class UICalendar implements Runnable{
 		generarOpcionesSuperiores(laminaSuperior);
 		monthText.setText(getCalendarControl().getMonth().getMesesAno()[getCalendarControl().getMonth().getMonth()]);
 		yearText.setText(Integer.toString(getCalendarControl().getMonth().getYear()));
-		generarCuadriculaMes (laminaCentral,getCalendarControl().getMonth());
-		generarCuadriculaNumeroSemanas(laminaOeste,getCalendarControl().getMonth());
+		generarCuadriculaMesInicial (laminaCentral,calendarControl);
+		generarCuadriculaNumeroSemanasInicial(laminaOeste,calendarControl);
 		visualizarHora(laminaInferior);
 		marco.add(laminaPrincipal);
 		visualizarVentana ();
@@ -46,14 +44,13 @@ public class UICalendar implements Runnable{
 
 	}
 	
-	public void drawUpdate(Month month) {
-		
-		monthText.setText(month.getMesesAno()[month.getMonth()]);
-		yearText.setText(Integer.toString(month.getYear()));
-		generarCuadriculaMes (laminaCentral,month);
-		generarCuadriculaNumeroSemanas(laminaOeste,month);
+	public void drawUpdate(CalendarControl calendarControl) {
+				
+		monthText.setText(calendarControl.getNewMonth().getMesesAno()[calendarControl.getNewMonth().getMonth()]);
+		yearText.setText(Integer.toString(calendarControl.getNewMonth().getYear()));
+		generarCuadriculaMesUpdate (laminaCentral,calendarControl);
+		generarCuadriculaNumeroSemanasUpdate(laminaOeste,calendarControl);
 		visualizarHora(laminaInferior);
-		//actualizarFecha();
 		marco.add(laminaPrincipal);
 		visualizarVentana ();
 		
@@ -127,26 +124,43 @@ public class UICalendar implements Runnable{
 	}
 	
 	
-	private void generarCuadriculaMes (JPanel laminaCentral, Month month) {
-		
+	private void generarLaminaCuadriculaMes (JPanel laminaCentral) {
 		
 		GridLayout grid = new GridLayout(7,7);
 		laminaCentral.removeAll();		
 		laminaCentral.setLayout(grid);
 		laminaCentral.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		generarMes(laminaCentral, month);
+		
+	}
+
+	private void generarCuadriculaMesInicial (JPanel laminaCentral, CalendarControl calendarControl) {
+		
+		generarLaminaCuadriculaMes (laminaCentral);
+		generarMesInicial(laminaCentral, calendarControl);
 		
 	}
 	
-	
-	private void generarCuadriculaNumeroSemanas (JPanel laminaOeste, Month month) {
+	private void generarCuadriculaMesUpdate (JPanel laminaCentral, CalendarControl calendarControl) {
 		
+		
+		generarLaminaCuadriculaMes (laminaCentral);
+		generarMesUpdate(laminaCentral, calendarControl);
+		
+	}
+	
+	private void generarLaminaCuadriculaNumeroSemanas (JPanel laminaOeste) {
 		
 		GridLayout grid = new GridLayout(7,1);
 		laminaOeste.removeAll();
 		laminaOeste.setLayout(grid);
+	
+	}
+	
+	private void generarCuadriculaNumeroSemanasInicial (JPanel laminaOeste, CalendarControl calendarControl) {
 		
-		for (String s: month.numberWeekToDraw()) {
+		generarLaminaCuadriculaNumeroSemanas (laminaOeste);
+
+		for (String s: calendarControl.getMonth().numberWeekToDraw()) {
 			
 			TextFieldCustom tf = new TextFieldCustom (s,2,10);
 			laminaOeste.add(tf);
@@ -154,6 +168,21 @@ public class UICalendar implements Runnable{
 		}
 		
 
+	}
+
+	
+	private void generarCuadriculaNumeroSemanasUpdate (JPanel laminaOeste, CalendarControl calendarControl) {
+		
+		
+		generarLaminaCuadriculaNumeroSemanas (laminaOeste);
+		
+		for (String s: calendarControl.getNewMonth().numberWeekToDraw()) {
+			
+			TextFieldCustom tf = new TextFieldCustom (s,2,10);
+			laminaOeste.add(tf);
+			
+		}
+		
 	}
 	
 	
@@ -178,13 +207,13 @@ public class UICalendar implements Runnable{
 		
 	}
 	
-	private void generarMes (JPanel laminaCentral, Month month) {
+	private void generarMesInicial (JPanel laminaCentral, CalendarControl calendarControl) {
 		
-		for (String a:month.monthToDraw()) {
+		for (String a:calendarControl.getMonth().monthToDraw()) {
 			
 			TextFieldCustom tf = new TextFieldCustom(a,1,16);
 			
-			if (month.isCourrentMonth()&&month.toDay().equals(a)) {
+			if (calendarControl.getMonth().isCourrentMonth()&&calendarControl.getMonth().toDay().equals(a)) {
 				
 				tf.setForeground(Color.RED);
 			};
@@ -194,12 +223,52 @@ public class UICalendar implements Runnable{
 		
 	}
 	
+	
+	
+	private void generarMesUpdate (JPanel laminaCentral, CalendarControl calendarControl) {
+		
+		for (String a:calendarControl.getNewMonth().monthToDraw()) {
+			
+			TextFieldCustom tf = new TextFieldCustom(a,1,16);
+			
+			if (calendarControl.getNewMonth().isCourrentMonth()&&calendarControl.getNewMonth().toDay().equals(a)) {
+				
+				tf.setForeground(Color.RED);
+			};
+
+			laminaCentral.add(tf);
+		}
+		
+	}
+	
+	
 	private void visualizarVentana () {
 		
 		marco.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		marco.setVisible(true);
-		marco.addWindowListener(calendarControl.getMonthControlWindow());
+		//marco.addWindowListener(calendarControl.getMonthControlWindow());
 		
+	}
+	
+
+	public void run() {
+		
+		while (true) {
+			
+			actualizarFecha();
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (getCalendarControl().getHora().cambioDia()) {
+				calendarControl.getMonthControlMonth().actualizaMes();				
+			}
+			
+		}
+	
 	}
 	
 	public JTextField getYearText() {
@@ -224,26 +293,6 @@ public class UICalendar implements Runnable{
 
 	public void setCalendarControl(CalendarControl mc) {
 		this.calendarControl = mc;
-	}
-
-	public void run() {
-		
-		while (true) {
-			
-			actualizarFecha();
-			
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			if (getCalendarControl().getHora().cambioDia()) {
-				calendarControl.getMonthControlMonth().actualizaMes();				
-			}
-			
-		}
-	
 	}
 
 }
