@@ -16,6 +16,10 @@ public class UICalendar implements Runnable{
 	private TextFieldCustom yearText;
 	private TextFieldCustom monthText;
 	private TextFieldCustom hourText;
+	ButtonCustom botonFlechaIzquierdaYear;
+	ButtonCustom botonFlechaIzquierdaMonth;
+	ButtonCustom botonFlechaDerechaYear;
+	ButtonCustom botonFlechaDerechaMonth;
 	private Thread hiloHora;
 	
 	
@@ -84,16 +88,16 @@ public class UICalendar implements Runnable{
 		JSeparator separador = new JSeparator();
 		separador.setPreferredSize(new Dimension(30, 0));
 		
-		ButtonCustom botonFlechaIzquierda = new ButtonCustom(null,"<",15,20);
+		botonFlechaIzquierdaYear = new ButtonCustom(null,"<",15,20);
 		yearText = new TextFieldCustom ("",3,18);
-		ButtonCustom botonFlechaDerecha = new ButtonCustom(null,">",15,20);
+		botonFlechaDerechaYear = new ButtonCustom(null,">",15,20);
 		
-		botonFlechaIzquierda.addActionListener(calendarControl.getMonthControlYear());
-		botonFlechaDerecha.addActionListener(calendarControl.getMonthControlYear());
+		botonFlechaIzquierdaYear.addActionListener(calendarControl.getMonthControlYear());
+		botonFlechaDerechaYear.addActionListener(calendarControl.getMonthControlYear());
 	
-		ButtonCustom botonFlechaIzquierda2 = new ButtonCustom(null,"<",15,20);
+		botonFlechaIzquierdaMonth = new ButtonCustom(null,"<",15,20);
 		monthText = new TextFieldCustom ("",6,15);
-		ButtonCustom botonFlechaDerecha2 = new ButtonCustom(null,">",15,20);
+		botonFlechaDerechaMonth = new ButtonCustom(null,">",15,20);
 		
 		JSeparator separador2 = new JSeparator();
 		separador2.setPreferredSize(new Dimension(44, 0));
@@ -101,21 +105,21 @@ public class UICalendar implements Runnable{
 		ButtonCustom botonHoy =  new ButtonCustom (null,"",25,22);
 
 				
-		botonFlechaIzquierda2.addActionListener(calendarControl.getMonthControlMonth());
-		botonFlechaDerecha2.addActionListener(calendarControl.getMonthControlMonth());
+		botonFlechaIzquierdaMonth.addActionListener(calendarControl.getMonthControlMonth());
+		botonFlechaDerechaMonth.addActionListener(calendarControl.getMonthControlMonth());
 		
 		botonHoy.addActionListener(calendarControl.getMonthControlMonth());
 		
 		
-		laminaSuperior.add(botonFlechaIzquierda);
+		laminaSuperior.add(botonFlechaIzquierdaYear);
 		laminaSuperior.add(yearText);
-		laminaSuperior.add(botonFlechaDerecha);
+		laminaSuperior.add(botonFlechaDerechaYear);
 		
 		laminaSuperior.add(separador);
 		
-		laminaSuperior.add(botonFlechaIzquierda2);
+		laminaSuperior.add(botonFlechaIzquierdaMonth);
 		laminaSuperior.add(monthText);
-		laminaSuperior.add(botonFlechaDerecha2);
+		laminaSuperior.add(botonFlechaDerechaMonth);
 		
 		laminaSuperior.add(separador2);
 		
